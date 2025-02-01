@@ -20,24 +20,28 @@ public class TelaDicionario extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel labelTermo = new JLabel("Digite a palavra:");
-        labelTermo.setBounds(120, 20, 100, 25);
+        labelTermo.setBounds(175, 20, 100, 25);
         add(labelTermo);
 
         textFieldTermo = new JTextField();
-        textFieldTermo.setBounds(220, 20, 160, 25);
+        textFieldTermo.setBounds(275, 20, 160, 25);
         add(textFieldTermo);
 
         JButton botaoTraduzir = new JButton("Traduzir");
-        botaoTraduzir.setBounds(100, 60, 100, 25);
+        botaoTraduzir.setBounds(150, 60, 100, 25);
         add(botaoTraduzir);
 
+        JButton botaoTraduzirDoPortugues = new JButton("Traduzir do Português");
+        botaoTraduzirDoPortugues.setBounds(260, 60, 200, 25);
+        add(botaoTraduzirDoPortugues);
+
         JButton botaoLocalizar = new JButton("Localizar");
-        botaoLocalizar.setBounds(380, 60, 100, 25);
+        botaoLocalizar.setBounds(150, 100, 100, 25);
         add(botaoLocalizar);
 
-        JButton botaoTraduzirDoPortugues = new JButton("Traduzir do Português");
-        botaoTraduzirDoPortugues.setBounds(210, 60, 160, 25);
-        add(botaoTraduzirDoPortugues);
+        JButton botaoLocalizarPortugues = new JButton("Localizar do Português");
+        botaoLocalizarPortugues.setBounds(260, 100, 200, 25);
+        add(botaoLocalizarPortugues);
 
         textAreaResultado = new JTextArea();
         textAreaResultado.setEditable(false);
@@ -47,24 +51,24 @@ public class TelaDicionario extends JFrame {
         textAreaResultado.setMargin(new Insets(10, 10, 10, 10));
 
         JScrollPane scrollPane = new JScrollPane(textAreaResultado);
-        scrollPane.setBounds(20, 100, 545, 150);
+        scrollPane.setBounds(20, 140, 545, 150);
         add(scrollPane);
 
         JLabel labelWarningNotification = new JLabel("", SwingConstants.CENTER);
-        labelWarningNotification.setBounds(20, 255, 520, 25);
+        labelWarningNotification.setBounds(30, 310, 520, 25);
         labelWarningNotification.setFont(new Font("Arial", Font.BOLD, 12));
         add(labelWarningNotification);
 
         comboIdiomas = new JComboBox<>();
-        comboIdiomas.setBounds(20, 285, 150, 25);
+        comboIdiomas.setBounds(20, 295, 150, 25);
         add(comboIdiomas);
 
         JLabel labelMensagem = new JLabel("Idioma atual:");
-        labelMensagem.setBounds(200, 285, 100, 25);
+        labelMensagem.setBounds(410, 310, 100, 25);
         add(labelMensagem);
 
         JLabel labelBandeira = new JLabel();
-        labelBandeira.setBounds(280, 285, 60, 30);
+        labelBandeira.setBounds(490, 310, 60, 30);
         labelBandeira.setHorizontalAlignment(SwingConstants.CENTER);
         add(labelBandeira);
 
@@ -85,7 +89,6 @@ public class TelaDicionario extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String termo = textFieldTermo.getText();
                 if (termo.isEmpty()) {
-                    // JOptionPane.showMessageDialog(null, "Digite uma palavra!");
                     labelWarningNotification.setForeground(Color.RED);
                     labelWarningNotification.setText("Digite uma palavra!");
                     return;
@@ -101,37 +104,6 @@ public class TelaDicionario extends JFrame {
                         textAreaResultado.setText("Nenhum resultado encontrado.");
                         labelWarningNotification.setForeground(Color.RED);
                         labelWarningNotification.setText("Erro: Nenhuma tradução foi encontrada.");
-                }
-            }
-        });
-
-        botaoLocalizar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String termo = textFieldTermo.getText();
-                if (termo.isEmpty()) {
-                    // JOptionPane.showMessageDialog(null, "Digite uma palavra!");
-                    labelWarningNotification.setForeground(Color.RED);
-                    labelWarningNotification.setText("Digite uma palavra!");
-                    return;
-                }
-                ArrayList<String> resultados = dicionario.localizarPalavraIdioma(termo);
-
-                if (!resultados.isEmpty()) {
-                    textAreaResultado.setText("Resultado(s):\n" + String.join("\n", resultados));
-                    labelWarningNotification.setForeground(Color.BLACK);
-                    labelWarningNotification.setText("Palavras localizadas no idioma atual!");
-                } else {
-                    resultados = dicionario.localizarPalavraPortugues(termo);
-                    if (!resultados.isEmpty()) {
-                        textAreaResultado.setText("Resultado(s):\n" + String.join("\n", resultados));
-                        labelWarningNotification.setForeground(Color.BLACK);
-                        labelWarningNotification.setText("Palavras localizadas em português!");
-                    } else {
-                        textAreaResultado.setText("Nenhum resultado encontrado.");
-                        labelWarningNotification.setForeground(Color.RED);
-                        labelWarningNotification.setText("Erro: Nenhuma palavra localizada.");
-                    }
                 }
             }
         });
@@ -160,6 +132,53 @@ public class TelaDicionario extends JFrame {
                     textAreaResultado.setText("Nenhum resultado encontrado.");
                     labelWarningNotification.setForeground(Color.RED);
                     labelWarningNotification.setText("Erro: Nenhuma tradução foi encontrada.");
+                }
+            }
+        });
+
+        botaoLocalizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String termo = textFieldTermo.getText();
+                if (termo.isEmpty()) {
+                    labelWarningNotification.setForeground(Color.RED);
+                    labelWarningNotification.setText("Digite uma palavra!");
+                    return;
+                }
+                ArrayList<String> resultados = dicionario.localizarPalavraIdioma(termo);
+
+                if (!resultados.isEmpty()) {
+                    textAreaResultado.setText("Resultado(s):\n" + String.join("\n", resultados));
+                    labelWarningNotification.setForeground(Color.BLACK);
+                    labelWarningNotification.setText("Palavras localizadas no idioma atual!");
+                } else {
+                    textAreaResultado.setText("Nenhum resultado encontrado.");
+                    labelWarningNotification.setForeground(Color.RED);
+                    labelWarningNotification.setText("Erro: Nenhuma palavra localizada.");
+                }
+            }
+        });
+
+        botaoLocalizarPortugues.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String termo = textFieldTermo.getText();
+                if (termo.isEmpty()) {
+                    labelWarningNotification.setForeground(Color.RED);
+                    labelWarningNotification.setText("Digite uma palavra!");
+                    return;
+                }
+
+                ArrayList<String> resultados = dicionario.localizarPalavraPortugues(termo);
+
+                if (!resultados.isEmpty()) {
+                    textAreaResultado.setText("Resultado(s):\n" + String.join("\n", resultados));
+                    labelWarningNotification.setForeground(Color.BLACK);
+                    labelWarningNotification.setText("Palavras localizadas em português!");
+                } else {
+                    textAreaResultado.setText("Nenhum resultado encontrado.");
+                    labelWarningNotification.setForeground(Color.RED);
+                    labelWarningNotification.setText("Erro: Nenhuma palavra localizada.");
                 }
             }
         });
