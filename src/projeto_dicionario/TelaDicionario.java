@@ -127,7 +127,7 @@ public class TelaDicionario extends JFrame {
                 if (!resultados.isEmpty()) {
                     textAreaResultado.setText("Resultado(s):\n" + String.join("\n", resultados));
                     labelWarningNotification.setForeground(Color.BLACK);
-                    labelWarningNotification.setText("Tradução do português para o idioma selecionado encontrada!");
+                    labelWarningNotification.setText("Tradução do português encontrada!");
                 } else {
                     textAreaResultado.setText("Nenhum resultado encontrado.");
                     labelWarningNotification.setForeground(Color.RED);
